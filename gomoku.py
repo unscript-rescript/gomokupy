@@ -128,7 +128,7 @@ def play_game(n=15):
 	# print intial board
 	Gomoku.print_board()
 	while end_game == False:
-		option = input(f"Player {Gomoku.current_player} move [col-row] OR b - back, q - quit: ")
+		option = input(f"Player {Gomoku.current_player} move [e.g. h8] OR b - back, q - quit: ")
 		if option == "b":
 			# go back one move
 			Gomoku.undo()
