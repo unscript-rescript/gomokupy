@@ -1,4 +1,4 @@
-"""
+﻿"""
 Gomoku in console
 """
 
@@ -152,7 +152,7 @@ class GomokuGame:
 	def check_victory(self):
 		# check row-wise and row-wise
 		for i in range(self.n):
-			for idx in range(self.n - self.connect):
+			for idx in range(self.n - self.connect + 1):
 				# column-wise
 				if sum(self.board[i, idx:idx+self.connect]) == self.connect:
 					print(sum(self.board[i, idx:idx+self.connect]))
@@ -165,7 +165,16 @@ class GomokuGame:
 					print("Player 1 wins vertically!")
 				elif sum(self.board[idx:idx+self.connect, i]) == -self.connect:
 					print("Player 2 wins vertically!")
-		# check diagonally --- TODO
+		# check diagonal-wise
+		for i in range(self.n - self.connect + 1):
+			for j in range(self.n - self.connect + 1):
+				sub_grid = self.board[i:i+self.connect, j:j+self.connect]
+				if np.sum(sub_grid.diagonal()) == self.connect\
+					or np.sum(np.fliplr(sub_grid).diagonal()) == self.connect:
+					print("Player 1 wins diagonally!")
+				elif np.sum(sub_grid.diagonal()) == -self.connect\
+					or np.sum(np.fliplr(sub_grid).diagonal()) == -self.connect:
+					print("Player 2 wins diagonally!")
 		return
 
 def play_game(n=15):
