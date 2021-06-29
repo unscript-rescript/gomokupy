@@ -45,5 +45,5 @@ will initialize the game
 
 15       -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
-Player 1 move [col-row] OR b - back, q - quit:
+Player 1 move [e.g. h8] OR b - back, q - quit:
 ```
