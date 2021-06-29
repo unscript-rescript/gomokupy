@@ -32,7 +32,7 @@ def location2coordiante(loc, colnames):
 def get_marker(player_int):
 	if player_int == 1:
 		marker = "●"
-	elif player_int == -1:
+	elif player_int == 2:
 		marker = "○"
 	else:
 		marker = "-"
@@ -55,7 +55,7 @@ class GomokuGame:
 		# column-wise space
 		self.colspace = colspace
 		# top message
-		self.topbar = "     "
+		self.topbar = "      "
 		for col in self.colnames:
 			self.topbar += " "*self.colspace + col
 		if self.n > 26:
@@ -68,14 +68,19 @@ class GomokuGame:
 			if move_success==True:
 				self.current_player = 2
 		else:
-			move_success = self.player_update(loc, -1)
+			move_success = self.player_update(loc, 2)
 			if move_success==True:
 				self.current_player = 1
 		return
 
 
 	def player_update(self, loc, player_int):
-		"""Insert player move into board"""
+		"""Insert player move into board
+
+		Args:
+			loc (str): location on the board, in format "col" + "row"
+			player_int (int): player move integer, 1 or 2
+		"""
 		row, col, location_valid = location2coordiante(loc, self.colnames)
 		if location_valid==True:
 			if self.board[row, col] == 0:
