@@ -34,12 +34,18 @@ def location2coordiante(loc, colnames):
 	return row, col, location_valid
 
 
-def get_marker(player_int):
+def get_marker(player_int, marker_type="goishi"):
 	"""Return marker for player"""
 	if player_int == 1:
-		marker = "●"
+		if marker_type=="goishi":
+			marker = "●"
+		else:
+			marker = "X"
 	elif player_int == -1:
-		marker = "○"
+		if marker_type=="goishi":
+			marker = "○"
+		else:
+			marker = "O"
 	else:
 		marker = "-"
 	return marker
