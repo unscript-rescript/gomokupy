@@ -6,7 +6,12 @@ import numpy as np
 
 
 def location2coordiante(loc, colnames):
-	"""Get coordinate from string and check if it is a valid input"""
+	"""Get coordinate from string and check if it is a valid input
+
+	Args:
+		loc (str): location in string
+		colnames (lst): list of strings, alphabetical order, denoting column names
+	"""
 	col_str = loc[0]   # string
 	row_str = loc[1:]
 	print(f"col_str: {col_str}")
@@ -30,9 +35,10 @@ def location2coordiante(loc, colnames):
 
 
 def get_marker(player_int):
+	"""Return marker for player"""
 	if player_int == 1:
 		marker = "●"
-	elif player_int == 2:
+	elif player_int == -1:
 		marker = "○"
 	else:
 		marker = "-"
@@ -40,14 +46,22 @@ def get_marker(player_int):
 
 
 class GomokuGame:
-	def __init__(self, n=15, colspace=3):
+	def __init__(self, n=15, connect=5, colspace=3):
+		"""Gomoku-Game class
+
+		Args:
+			n (int): board size, n-by-n
+			connect (int): how many to cnnect to win
+			colspace (int): white-space between columbs when printing
+		"""
 		# initialize game
-		self.n = n
-		self.board = np.zeros((n,n))
-		self.board_prev = self.board
+		self.n            = n
+		self.connect      = connect
+		self.board        = np.zeros((n,n))
+		self.board_prev   = self.board
 		self.move_history = []
 		# initialize column name
-		self.colnames = []
+		self.colnames     = []
 		for idx in range(n):
 			self.colnames.append(chr(idx+97))
 		# initialize player
@@ -60,15 +74,17 @@ class GomokuGame:
 			self.topbar += " "*self.colspace + col
 		if self.n > 26:
 			raise ValueError("Max board size is 26!")
+		self.winner = None
+
 
 	def update(self, loc):
 		"""Update move"""
 		if self.current_player == 1:
-			move_success = self.player_update(loc, 1)
+			move_success = self.player_update(loc, player_int=1)
 			if move_success==True:
 				self.current_player = 2
 		else:
-			move_success = self.player_update(loc, 2)
+			move_success = self.player_update(loc, player_int=-1)
 			if move_success==True:
 				self.current_player = 1
 		return
@@ -79,7 +95,7 @@ class GomokuGame:
 
 		Args:
 			loc (str): location on the board, in format "col" + "row"
-			player_int (int): player move integer, 1 or 2
+			player_int (int): player move integer, 1 or -1
 		"""
 		row, col, location_valid = location2coordiante(loc, self.colnames)
 		if location_valid==True:
@@ -111,6 +127,8 @@ class GomokuGame:
 				marker = get_marker(int(el))
 				col_str += " "*self.colspace + marker
 			print(col_str, "\n")
+		# check if someone won
+		self.check_victory()
 		return
 
 
@@ -130,6 +148,25 @@ class GomokuGame:
 				self.current_player = 1
 		return
 
+
+	def check_victory(self):
+		# check row-wise and row-wise
+		for i in range(self.n):
+			for idx in range(self.n - self.connect):
+				# column-wise
+				if sum(self.board[i, idx:idx+self.connect]) == self.connect:
+					print(sum(self.board[i, idx:idx+self.connect]))
+					print("Player 1 wins horizontally!")
+				elif sum(self.board[i, idx:idx+self.connect]) == -self.connect:
+					print(sum(self.board[i, idx:idx+self.connect]))
+					print("Player 2 wins horizontally!")
+				# row-wise
+				elif sum(self.board[idx:idx+self.connect, i]) == self.connect:
+					print("Player 1 wins vertically!")
+				elif sum(self.board[idx:idx+self.connect, i]) == -self.connect:
+					print("Player 2 wins vertically!")
+		# check diagonally --- TODO
+		return
 
 def play_game(n=15):
 	"""Play Gomoku game
