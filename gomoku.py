@@ -58,6 +58,8 @@ class GomokuGame:
 		self.topbar = "     "
 		for col in self.colnames:
 			self.topbar += " "*self.colspace + col
+		if self.n > 26:
+			raise ValueError("Max board size is 26!")
 
 	def update(self, loc):
 		"""Update move"""
@@ -95,7 +97,11 @@ class GomokuGame:
 		print(self.topbar)
 		print("\n")
 		for idx, ithcol in enumerate(self.board):
-			col_str = str(idx+1) + "    "
+			if len(str(idx+1)) == 1:
+				col_name = " " + str(idx+1)
+			else:
+				col_name = str(idx+1)
+			col_str = col_name + "    "
 			for el in ithcol:
 				marker = get_marker(int(el))
 				col_str += " "*self.colspace + marker
@@ -121,7 +127,11 @@ class GomokuGame:
 
 
 def play_game(n=15):
-	"""Play Gomoku game"""
+	"""Play Gomoku game
+
+	Args:
+		n (int): board size, will be n * n, max 26
+	"""
 	# initialize
 	Gomoku = GomokuGame(n=n)
 	end_game = False
