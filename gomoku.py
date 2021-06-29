@@ -35,7 +35,12 @@ def location2coordiante(loc, colnames):
 
 
 def get_marker(player_int, marker_type="goishi"):
-	"""Return marker for player"""
+	"""Return marker for player
+
+	Args:
+		player_int (int): player integer, 1 or -1
+		marker_type (str): marker type, "goishi" or "tictac"
+	"""
 	if player_int == 1:
 		if marker_type=="goishi":
 			marker = "●"
@@ -182,6 +187,7 @@ class GomokuGame:
 					or np.sum(np.fliplr(sub_grid).diagonal()) == -self.connect:
 					print("Player 2 wins diagonally!")
 		return
+
 
 def play_game(n=15):
 	"""Play Gomoku game
